@@ -32,10 +32,6 @@ func main() {
 		log.Fatalln("セッションの作成に失敗しました:", err)
 	}
 
-	s.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) {
-		log.Print("Bot を起動しました")
-	})
-
 	s.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		if h, ok := commandHandlers[i.ApplicationCommandData().Name]; ok {
 			h(s, i)
@@ -46,6 +42,7 @@ func main() {
 	if err != nil {
 		log.Fatalln("Discord への接続に失敗しました:", err)
 	}
+	defer s.Close()
 
 	for _, v := range commands {
 		_, err := s.ApplicationCommandCreate(s.State.User.ID, "", v)
@@ -54,7 +51,7 @@ func main() {
 		}
 	}
 
-	defer s.Close()
+	log.Print("Bot を起動しました（CTRL-C で終了）")
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
