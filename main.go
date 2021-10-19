@@ -54,7 +54,7 @@ func main() {
 	log.Print("Bot を起動しました（CTRL-C で終了）")
 
 	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	signal.Notify(stop, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-stop
 	log.Print("Bot をシャットダウンしています")
 }

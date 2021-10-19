@@ -50,7 +50,7 @@ func TeamCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	if n < 2 { // チーム数が2未満の場合
 		msg = fmt.Sprintf("チーム数は2以上%d以下を指定してください", len(teamEmoji))
 	} else if len(p) < 2 { // 参加者が2人未満の場合
-		msg = fmt.Sprint("参加者が2人以上必要です")
+		msg = "参加者が2人以上必要です"
 	} else {
 		if len(teamEmoji) < n { // チーム数がチーム絵文字の数より大きい場合
 			n = len(teamEmoji)
@@ -87,10 +87,15 @@ func TeamCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	}
 
 	// レスポンスを返す
-	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+	err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
 			Content: msg,
 		},
 	})
+	if err != nil {
+		s.FollowupMessageCreate(s.State.User.ID, i.Interaction, true, &discordgo.WebhookParams{
+			Content: "メッセージの送信に失敗しました",
+		})
+	}
 }
