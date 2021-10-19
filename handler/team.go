@@ -24,7 +24,7 @@ var (
 
 	TeamCommand = &discordgo.ApplicationCommand{
 		Name:        "team",
-		Description: "チーム分けします",
+		Description: "チーム分けします。",
 		Options: []*discordgo.ApplicationCommandOption{
 			{
 				Type:        discordgo.ApplicationCommandOptionInteger,
@@ -86,7 +86,7 @@ func TeamCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		}
 	}
 
-	// 返信を送信
+	// レスポンスを返す
 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
