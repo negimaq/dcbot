@@ -94,8 +94,6 @@ func TeamCommandHandler(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		},
 	})
 	if err != nil {
-		s.FollowupMessageCreate(s.State.User.ID, i.Interaction, true, &discordgo.WebhookParams{
-			Content: "メッセージの送信に失敗しました",
-		})
+		logPrintln("メッセージの送信に失敗しました:", err)
 	}
 }
